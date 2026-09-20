@@ -20,7 +20,8 @@ except Exception as e:
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'babymonster_quiz_2026'
 
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
+# 改為 let SocketIO 自動選擇或綁定 eventlet
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
 ROOMS = {}
 GLOBAL_LEADERBOARD = []
