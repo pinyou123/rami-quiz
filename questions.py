@@ -3,7 +3,7 @@
 QUESTION = [
     {"question": "Rami 在 BABYMONSTER 隊內擔任什麼定位？", "options": ["主唱", "主舞", "主 Rap", "門面"], "answer": "主唱"},
     {"question": "Rami 的生日是哪一天？", "options": ["10月17日", "05月20日", "12月25日", "01月01日"], "answer": "10月17日"},
-    {"question": "Rami 曾經翻唱過哪首著名的歌曲？", "options": ["Pick Up Your Jacket", "Shape of You", "Despacito", "Hello"], "answer": "Pick Up Your Jacket"},
+    {"question": "Rami 曾經翻唱過哪首著名的歌曲？", "options": ["Pick Up Your Feelings", "Shape of You", "Despacito", "Hello"], "answer": "Pick Up Your Feelings"},
     {"question": "Rami 在隊內年紀排行第幾大？", "options": ["3", "4", "5", "6"], "answer": "5"},
     {"question": "成員 RAMI 在正式出道前使用的藝名是？", "options": ["RAMI", "HARAM", "RORA", "RIRACHA"], "answer": "HARAM"},
     {"question": "RAMI 從幾歲開始就作為兒童模特兒拍攝廣告與畫報，擁有豐富的鏡頭經驗？",
@@ -42,5 +42,26 @@ QUESTION_VIDEO = [
     "options": ["BATTER UP", "SHEESH", "DRIP", "LIKE THAT"],
     "answer": "BATTER UP",
     "video_url": "/static/rami_v2.mp4",
+    "muted": False },
+    
+    {
+    "question": "這是哪首歌曲的MV？",
+    "options": ["LOVE,MAYNBE", "SHEESH", "DRIP", "CLIK CLAK"],
+    "answer": "CLIK CLAK",
+    "video_url": "/static/rami_v4.mp4",
+    "muted": False },
+    
+    {
+    "question": "這是哪首歌曲的MV？",
+    "options": ["REALLY LIKE YOU", "SUPA DUPA LUV", "LOVE IN MY HEART", "LIKE THAT"],
+    "answer": "REALLY LIKE YOU",
+    "video_url": "/static/rami_v3.mp4",
+    "muted": False },
+    
+    {
+    "question": "這是哪首歌曲的MV？",
+    "options": ["BILLIONAIRE", "STUCK IN THE MIDDLE", "REALLY LIKE YOU", "LOVE IN MY HEART"],
+    "answer": "STUCK IN THE MIDDLE",
+    "video_url": "/static/rami_v5.mp4",
     "muted": False },
     ]
