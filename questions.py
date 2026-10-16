@@ -67,8 +67,8 @@ QUESTION_VIDEO = [
     
     {
     "question": "當時 RAMI 在模仿哪個團員笑？",
-    "options": ["AHYEON", "PHARITA", "CHIQUITA", "RURA"],
-    "answer": "ASA",
+    "options": ["AHYEON", "PHARITA", "CHIQUITA", "RUKA"],
+    "answer": "RUKA",
     "video_url": "/static/rami_v6.mp4",
     "muted": False },
     
