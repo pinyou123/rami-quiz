@@ -20,7 +20,7 @@ except Exception as e:
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'babymonster_quiz_2026'
 
-# 改為 let SocketIO 自動選擇或綁定 eventlet
+# 相容 Render 的 gevent WebSocket 模式
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 ROOMS = {}
@@ -65,7 +65,7 @@ HTML_TEMPLATE_RAMI = """
 
         .bg-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(15, 10, 30, 0.65); z-index: -1;
+            background: rgba(10, 20, 40, 0.65); z-index: -1;
         }
 
         @media (max-width: 768px) {
@@ -75,37 +75,39 @@ HTML_TEMPLATE_RAMI = """
             .title { font-size: 20px !important; }
         }
 
+        /* 💡 外框與背景改為藍色主題 */
         .container {
             width: 90%; max-width: 420px;
-            background: rgba(24, 15, 46, 0.78); backdrop-filter: blur(16px);
-            border: 1px solid rgba(192, 132, 252, 0.5); border-radius: 20px;
+            background: rgba(15, 23, 42, 0.82); backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 20px;
             padding: 25px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7); z-index: 1;
             margin: auto; text-align: center;
         }
 
         .title {
             text-align: center; font-size: 22px; font-weight: 900;
-            color: #c084fc; text-shadow: 0 0 15px rgba(192, 132, 252, 0.8); margin-bottom: 20px; line-height: 1.3;
+            color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.8); margin-bottom: 20px; line-height: 1.3;
         }
 
         .form-group { margin-bottom: 14px; text-align: left; }
         label { display: block; font-size: 13px; color: #ffffff; font-weight: bold; margin-bottom: 6px; }
         input {
             width: 100%; padding: 11px 14px; border-radius: 10px;
-            border: 1px solid rgba(192, 132, 252, 0.4); background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(15, 23, 42, 0.6);
             color: #fff; font-size: 14px; outline: none;
         }
 
+        /* 💡 按鈕改為藍色漸層 */
         .btn {
-            width: 100%; padding: 13px; background: linear-gradient(135deg, #a855f7, #ec4899);
+            width: 100%; padding: 13px; background: linear-gradient(135deg, #0284c7, #38bdf8);
             border: none; border-radius: 10px; color: #fff; font-size: 15px; font-weight: bold;
-            cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+            cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
         }
 
         .hidden { display: none !important; }
 
         .quiz-media {
-            width: 100%; max-height: 200px; border-radius: 12px; margin: 10px 0; object-fit: cover; border: 1px solid rgba(192, 132, 252, 0.3);
+            width: 100%; max-height: 200px; border-radius: 12px; margin: 10px 0; object-fit: cover; border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
         .quiz-text {
@@ -113,9 +115,10 @@ HTML_TEMPLATE_RAMI = """
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); margin: 15px 0; line-height: 1.4; word-break: break-word;
         }
 
+        /* 💡 選項框線改為藍色調 */
         .quiz-option {
             width: 100%; padding: 12px; margin-top: 10px;
-            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(192, 132, 252, 0.4);
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(56, 189, 248, 0.4);
             border-radius: 10px; color: #fff; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s;
         }
 
@@ -131,7 +134,7 @@ HTML_TEMPLATE_RAMI = """
         .quiz-option.wrong { background: #ef4444 !important; border-color: #ef4444 !important; color: #fff !important; opacity: 1; }
 
         .timer-bar {
-            height: 6px; background: #c084fc; border-radius: 3px; margin: 12px 0; transition: width 0.1s linear;
+            height: 6px; background: #38bdf8; border-radius: 3px; margin: 12px 0; transition: width 0.1s linear;
         }
 
         .leaderboard-table {
@@ -140,7 +143,7 @@ HTML_TEMPLATE_RAMI = """
         .leaderboard-table th, .leaderboard-table td {
             padding: 8px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .leaderboard-table th { color: #c084fc; background: rgba(168, 85, 247, 0.2); }
+        .leaderboard-table th { color: #38bdf8; background: rgba(56, 189, 248, 0.2); }
     </style>
 </head>
 <body>
@@ -148,7 +151,8 @@ HTML_TEMPLATE_RAMI = """
     <div class="bg-overlay"></div>
 
     <div class="container">
-        <h1 class="title">🎂 1017 HAPPY RAMI DAY<br><span style="font-size:15px; color:#e9d5ff;">生咖問答測試版</span></h1>
+        <!-- 💡 標題修改為「生咖快問快答」 -->
+        <h1 class="title">🎂 1017 HAPPY RAMI DAY<br><span style="font-size:15px; color:#bae6fd;">生咖快問快答</span></h1>
 
         <div id="setup-view">
             <div class="form-group">
@@ -160,7 +164,7 @@ HTML_TEMPLATE_RAMI = """
         </div>
 
         <div id="lobby-view" class="hidden">
-            <h3 style="color:#c084fc;">🎂 準備挑戰</h3>
+            <h3 style="color:#38bdf8;">🎂 準備挑戰</h3>
             <div id="player-list" style="margin: 15px 0;"></div>
             <button class="btn" onclick="startGame()">🚀 開始答題</button>
         </div>
@@ -170,9 +174,10 @@ HTML_TEMPLATE_RAMI = """
         </div>
     </div>
 
+    <!-- 💡 排行榜彈窗修改為 TOP 5 與藍色外框 -->
     <div id="leaderboard-modal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; z-index:999;">
-        <div style="background:#1e1b4b; border:1px solid #c084fc; padding:20px; border-radius:16px; width:90%; max-width:380px;">
-            <h3 style="color:#c084fc; margin-bottom:10px;">🏆 應援排行榜 TOP 30</h3>
+        <div style="background:#0f172a; border:1px solid #38bdf8; padding:20px; border-radius:16px; width:90%; max-width:380px;">
+            <h3 style="color:#38bdf8; margin-bottom:10px;">🏆 應援排行榜 TOP 5</h3>
             <div style="max-height:220px; overflow-y:auto;">
                 <table class="leaderboard-table">
                     <thead><tr><th>名次</th><th>名稱</th><th>答對</th><th>分數</th></tr></thead>
@@ -204,7 +209,7 @@ HTML_TEMPLATE_RAMI = """
         let html = "";
         if (data.leaderboard && data.leaderboard.length > 0) {
             data.leaderboard.forEach((p, index) => {
-                html += `<tr><td>${index + 1}</td><td><b>${p.name}</b></td><td>${p.correct_count || 0} 題</td><td style="color:#c084fc; font-weight:bold;">${p.score}</td></tr>`;
+                html += `<tr><td>${index + 1}</td><td><b>${p.name}</b></td><td>${p.correct_count || 0} 題</td><td style="color:#38bdf8; font-weight:bold;">${p.score}</td></tr>`;
             });
         } else { html = "<tr><td colspan='4'>暫無紀錄</td></tr>"; }
         document.getElementById('leaderboard-body').innerHTML = html;
@@ -233,7 +238,7 @@ HTML_TEMPLATE_RAMI = """
 
         let q = data.question;
         let html = `
-            <div style="display:flex; justify-content:space-between; color:#e9d5ff; font-weight:bold; font-size:13px;">
+            <div style="display:flex; justify-content:space-between; color:#bae6fd; font-weight:bold; font-size:13px;">
                 <span>第 ${data.index + 1} / ${data.total} 題</span>
                 <span id="timer-text">⏱️ 10 秒</span>
             </div>
@@ -261,7 +266,6 @@ HTML_TEMPLATE_RAMI = """
         
         document.getElementById('quiz-box').innerHTML = html;
 
-        // 💡 邏輯判斷：影片題等播完；文字題與圖片題皆統一延遲 1 秒倒數
         if (q.video_url) {
             document.getElementById('timer-text').innerText = "🎬 觀看影片中...";
         } else {
@@ -316,9 +320,9 @@ HTML_TEMPLATE_RAMI = """
         let score = myInfo ? (myInfo.score || 0) : 0;
         
         let html = `
-            <h3 style="color:#c084fc; margin-bottom:10px;">🎉 挑戰結束</h3>
-            <p style="margin:10px 0; font-size:15px;">稱號：<b style="color:#e9d5ff;">${getRamiTitle(correct)}</b></p>
-            <p style="font-size:14px; color:#cbd5e1;">答對：<b>${correct}</b> 題 | 得分：<b style="color:#c084fc;">${score}</b> 分</p>
+            <h3 style="color:#38bdf8; margin-bottom:10px;">🎉 挑戰結束</h3>
+            <p style="margin:10px 0; font-size:15px;">稱號：<b style="color:#bae6fd;">${getRamiTitle(correct)}</b></p>
+            <p style="font-size:14px; color:#cbd5e1;">答對：<b>${correct}</b> 題 | 得分：<b style="color:#38bdf8;">${score}</b> 分</p>
             <button class="btn" onclick="location.reload()" style="margin-top:15px;">🔄 再次挑戰</button>
         `;
         document.getElementById('quiz-box').innerHTML = html;
@@ -378,8 +382,9 @@ def send_question(room):
                 json.dump(GLOBAL_LEADERBOARD, f, ensure_ascii=False, indent=2)
         except Exception as e: print(f"⚠️ 儲存失敗: {e}")
         
+        # 💡 排行榜改為僅截取 Top 5
         sorted_global = sorted(GLOBAL_LEADERBOARD, key=lambda x: x['score'], reverse=True)
-        emit('game_over', {"leaderboard": sorted_global[:30], "my_result": r['players']}, room=room)
+        emit('game_over', {"leaderboard": sorted_global[:5], "my_result": r['players']}, room=room)
 
 @socketio.on('submit_answer')
 def handle_answer(data):
@@ -399,8 +404,9 @@ def handle_answer(data):
 
 @socketio.on('get_leaderboard')
 def handle_get_leaderboard():
+    # 💡 查詢排行榜時也僅發送 Top 5
     sorted_global = sorted(GLOBAL_LEADERBOARD, key=lambda x: x['score'], reverse=True)
-    emit('update_leaderboard', {"leaderboard": sorted_global[:30]})
+    emit('update_leaderboard', {"leaderboard": sorted_global[:5]})
 
 if __name__ == '__main__':
     print("🚀 Rami 生日特別版伺服器啟動中...")

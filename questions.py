@@ -27,6 +27,27 @@ QUESTION_PICTURE = [
         "options": ["RORA","RUKA", "ASA", "PHARITA"],
         "answer": "RUKA"
     },
+    
+    {
+    "question": "這是哪首歌曲的MV？",
+    "options": ["LOVE,MAYNBE", "SHEESH", "DRIP", "CLIK CLAK"],
+    "answer": "CLIK CLAK",
+    "image_url": "/static/rami_p3.jpg",
+    },
+    
+    {
+    "question": "這是哪首歌曲的MV？",
+    "options": ["REALLY LIKE YOU", "SUPA DUPA LUV", "LOVE IN MY HEART", "LIKE THAT"],
+    "answer": "REALLY LIKE YOU",
+    "image_url": "/static/rami_p4.jpg",
+    },
+    
+    {
+    "question": "這是哪首歌曲的MV？",
+    "options": ["BILLIONAIRE", "STUCK IN THE MIDDLE", "REALLY LIKE YOU", "LOVE IN MY HEART"],
+    "answer": "STUCK IN THE MIDDLE",
+    "image_url": "/static/rami_p5.jpg",
+     }
 ]
 
 QUESTION_VIDEO = [
@@ -45,23 +66,10 @@ QUESTION_VIDEO = [
     "muted": False },
     
     {
-    "question": "這是哪首歌曲的MV？",
-    "options": ["LOVE,MAYNBE", "SHEESH", "DRIP", "CLIK CLAK"],
-    "answer": "CLIK CLAK",
-    "video_url": "/static/rami_v4.mp4",
+    "question": "當時 RAMI 在模仿哪個團員笑？",
+    "options": ["AHYEON", "PHARITA", "CHIQUITA", "RURA"],
+    "answer": "ASA",
+    "video_url": "/static/rami_v6.mp4",
     "muted": False },
     
-    {
-    "question": "這是哪首歌曲的MV？",
-    "options": ["REALLY LIKE YOU", "SUPA DUPA LUV", "LOVE IN MY HEART", "LIKE THAT"],
-    "answer": "REALLY LIKE YOU",
-    "video_url": "/static/rami_v3.mp4",
-    "muted": False },
-    
-    {
-    "question": "這是哪首歌曲的MV？",
-    "options": ["BILLIONAIRE", "STUCK IN THE MIDDLE", "REALLY LIKE YOU", "LOVE IN MY HEART"],
-    "answer": "STUCK IN THE MIDDLE",
-    "video_url": "/static/rami_v5.mp4",
-    "muted": False },
     ]
