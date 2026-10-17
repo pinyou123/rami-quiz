@@ -30,8 +30,18 @@ LEADERBOARD_FILE = "leaderboard_local.json"
 if os.path.exists(LEADERBOARD_FILE):
     try:
         with open(LEADERBOARD_FILE, "r", encoding="utf-8") as f:
-            GLOBAL_LEADERBOARD = json.load(f)
-            print(f"✅ 成功載入 {len(GLOBAL_LEADERBOARD)} 筆歷史排行榜紀錄！")
+            raw_data = json.load(f)
+            # 💡 自動過濾掉舊的測試暱稱 root 與 Pinyou
+            GLOBAL_LEADERBOARD = [
+                p for p in raw_data 
+                if p.get('name') not in ['root', 'Pinyou']
+            ]
+            
+            # 順便更新本地檔案，把過濾後的乾淨資料寫回
+            with open(LEADERBOARD_FILE, "w", encoding="utf-8") as wf:
+                json.dump(GLOBAL_LEADERBOARD, wf, ensure_ascii=False, indent=2)
+                
+            print(f"✅ 成功載入 {len(GLOBAL_LEADERBOARD)} 筆正式排行榜紀錄！")
     except Exception as e:
         print(f"⚠️ 讀取排行榜失敗: {e}")
 
