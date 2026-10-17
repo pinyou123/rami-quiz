@@ -24,16 +24,16 @@ app.config['SECRET_KEY'] = 'babymonster_quiz_2026'
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 ROOMS = {}
-# 1. 強制記憶體與檔案皆為空白
-ROOMS = {}
-LEADERBOARD_FILE = "leaderboard_local.json"  # 👈 補上這行宣告變數！
 GLOBAL_LEADERBOARD = []
+LEADERBOARD_FILE = "leaderboard_local.json"
 
-try:
-    with open(LEADERBOARD_FILE, "w", encoding="utf-8") as f:
-        json.dump([], f)
-except Exception as e:
-    pass
+if os.path.exists(LEADERBOARD_FILE):
+    try:
+        with open(LEADERBOARD_FILE, "r", encoding="utf-8") as f:
+            GLOBAL_LEADERBOARD = json.load(f)
+            print(f"✅ 成功載入 {len(GLOBAL_LEADERBOARD)} 筆歷史排行榜紀錄！")
+    except Exception as e:
+        print(f"⚠️ 讀取排行榜失敗: {e}")
 
 HTML_TEMPLATE_RAMI = """
 <!DOCTYPE html>
