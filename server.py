@@ -193,9 +193,9 @@ HTML_TEMPLATE_RAMI = """
     let myName = "", myRoom = "", timerInterval = null, timeLeft = 10, hasAnswered = false;
 
     function getRamiTitle(correct) {
-        if (correct >= 11) return "👑 Rami 首席靈魂音霸";
-        if (correct >= 8) return "💎 資深拉米葵";
-        if (correct >= 6) return "✨ 核心拉米控";
+        if (correct >= 13) return "👑 Rami 首席靈魂音霸";
+        if (correct >= 10) return "💎 資深拉米葵";
+        if (correct >= 7) return "✨ 核心拉米控";
         return "🌱 預備拉米粉";
     }
 
